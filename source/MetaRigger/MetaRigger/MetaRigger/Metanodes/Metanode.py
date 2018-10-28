@@ -11,6 +11,15 @@ class Metanode(object):
     A metanode class wraps a actual instance of an unknown node in the maya graph.
     The node is used to contain the actual metadata.
 
+    The metanode class provides a few different datatypes to store its data.
+        Connections
+            Connection are attributes that defines a relationship within the node graph.
+            Connection are either input or output attributes.
+            Every time a connection with name {name} is added to a metanode a corresponding walkTo{name} method, that returns
+            the node that has a relation with the connection, is added.
+
+            A Metanode class instance by default provides three connections : _parent(input), _childs(output) and _instance(input)
+
     Attributes:
         _metaNode : Contains a reference to the actual metanode instance in the graph
         _type : Contains the class, derived from pymel.core.general.PyNode, that the node is supposed to wrap.
@@ -18,6 +27,7 @@ class Metanode(object):
 
     Methods:
         build() : Builds the actual node that is wrapped by the Metanode instance
+        addConnection(name, isInput = True) : Adds a new connection to the metanode
     """
 
     def __init__(self, type=pymel.core.nodetypes.Unknown):
@@ -61,6 +71,11 @@ class Metanode(object):
             - _parent -> message ( Not Readable )
             - _childs -> message ( Not Writable )
 
+        Furthermore you can expect to have the following methods:
+            walkTo_instance()
+            walkTo_parent()
+            walkTo_childs()
+
         These attributes can be used to reconstruct a Metanode class instance from an actual metanode.
         Furthermore, the _parent and _childs attribute connections are used to represent relationships in a metanode network.
         
@@ -68,9 +83,9 @@ class Metanode(object):
         """
 
         self._metaNode.addAttr("_type", dataType = "string")
-        self._metaNode.addAttr("_instance", attributeType = "message", readable = False, writable = True)
-        self._metaNode.addAttr("_parent", attributeType = "message", readable = False, writable = True)
-        self._metaNode.addAttr("_childs", attributeType = "message", readable = True, writable = False)
+        self.addConnection("_instance")
+        self.addConnection("_parent")
+        self.addConnection("_childs", False)
 
     def build(self):
         """
@@ -86,3 +101,57 @@ class Metanode(object):
            self._instance = self._type()
 
         return self._instance
+
+    def addConnection(self, name, isInput = True):
+        """
+        Adds a new connection to the metanode
+
+        A connection is a message attribute, either not readable or not writable, that serves the purpose of
+        representing a relationship with other nodes.
+        Every time a connection is added with name {name}, a related walkTo{name} method is added 
+        to the Metanode class instance.
+        This method returns the node the connection points to.
+
+        Arguments:
+            name : The name of the connection
+            isInput : Declares the connection as an input attribute if True and as an Output Attribute if False
+        """
+        self._metaNode.addAttr(name, attributeType = "message", writable = isInput, readable = not isInput)
+
+        setattr(self, "walkTo{0}".format(name), self._composeWalkToAttr(name))
+
+    def _walkTo(self, connection):
+        """
+        Returns the node that is at the end of connection
+
+        If the connection has no current relationship this method returns None.
+        If an output connections has multiple relationships the one that was formed first is returned.
+
+        Arguments:
+            connection : The name of the connection to walk
+
+        Returns:
+            Returns either a pymel.core.general.PyNode derived class or None
+        """
+
+        connectedNodes = pymel.core.listConnections(getattr(self._metaNode, connection).name())
+        if (connectedNodes):
+            return connectedNodes[-1]
+        return None
+
+    def _composeWalkToAttr(self, connection):
+        """
+        Composes the walk function for connections.
+
+        This private method is used, internally, to create the walkTo methods when a connection is added.
+        
+        Arguments:
+            connection : The connection we are creating the method for
+
+        Returns:
+            A closure that walks the desired connection
+        """
+
+        def walkToAttr():
+            return self._walkTo(connection)
+        return walkToAttr

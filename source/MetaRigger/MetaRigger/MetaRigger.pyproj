@@ -28,6 +28,9 @@
     <Compile Include="MetaRigger\Metanodes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\MetanodeConnections.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanode.py">
       <SubType>Code</SubType>
     </Compile>
