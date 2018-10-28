@@ -22,7 +22,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MetaRigger\Metanodes\Metanode.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MetaRigger\Metanodes\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanode.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\__init__.py">
