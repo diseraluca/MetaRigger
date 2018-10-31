@@ -4,9 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>037b83ff-bbf8-437e-849c-0b1b69f2e5d2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
-    <SearchPath>MetaRigger;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages\pymel\core;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py\maya</SearchPath>
+    <StartupFile>MetaRigger\Metanodes\Metanode.py</StartupFile>
+    <SearchPath>MetaRigger;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages\pymel\core;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py\maya</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>MetaRigger</Name>
@@ -28,10 +27,13 @@
     <Compile Include="MetaRigger\Metanodes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\MetanodeConnections.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanodeConnections.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanode.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanodeOptions.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\__init__.py">
