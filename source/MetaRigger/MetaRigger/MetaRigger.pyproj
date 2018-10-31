@@ -27,13 +27,16 @@
     <Compile Include="MetaRigger\Metanodes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanodeConnections.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanode.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeConnections.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanodeOptions.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanode.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeOptions.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\__init__.py">
@@ -58,6 +61,7 @@
     <Folder Include="MetaRigger\tests\" />
     <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\" />
     <Folder Include="MetaRigger\tests\MetaRigger\" />
+    <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
