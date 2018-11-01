@@ -182,3 +182,28 @@ class Metanode(object):
 
         setattr(self, "is{0}".format(name), lambda : getattr(self._metaNode, name).get() )
         setattr(self, "set{0}".format(name), lambda value : getattr(self._metaNode, name).set(value) )
+
+    def addCounter(self, name, default = 0.0, min = 0.0, max = 1.0):
+        """
+        Adds a counter attribute to the Metanode instance.
+
+        A counter is a float attribute that serves the purpose of keeping the count of variable build parameters
+        and enables their customizations.
+        It can be used, for example, to set the number of joints in a spine module.
+
+        Every time a counter is added with name as {name}, two methods are added to the Metanode class instance:
+        howMany{name}, which returns the value stored in the counter and
+        setHowMany{name}, which sets the value stored in counter. If the value that is setted is outside the
+        minum and maximum range of the counter the value is clamped to the nearest valid amount.
+
+        Arguments:
+            name : The name of the counter
+            default : The initial (float) value of the counter
+            min : The minimun acceptable value for the counter
+            max : The maximum acceptable value for the counter
+        """
+
+        self._metaNode.addAttr(name, attributeType = "float", defaultValue = default, min = min, max = max)
+
+        setattr(self, "howMany{0}".format(name), lambda : getattr(self._metaNode, name).get() )
+        setattr(self, "setHowMany{0}".format(name), lambda value : getattr(self._metaNode, name).set(value, clamp = True) )
