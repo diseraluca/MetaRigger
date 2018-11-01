@@ -4,9 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>037b83ff-bbf8-437e-849c-0b1b69f2e5d2</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
-    <SearchPath>MetaRigger;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages\pymel\core;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py;..\..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py\maya</SearchPath>
+    <StartupFile>MetaRigger\Metanodes\Metanode.py</StartupFile>
+    <SearchPath>MetaRigger;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib\site-packages\pymel\core;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\Python\Lib;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py;..\..\..\..\..\..\..\..\Program Files\Autodesk\Maya2017\devkit\Maya2017u4_DEVKIT_Windows\devkitBase\devkit\other\pymel\extras\completion\py\maya</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>MetaRigger</Name>
@@ -28,10 +27,16 @@
     <Compile Include="MetaRigger\Metanodes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\MetanodeConnections.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\testMetanode.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeConnections.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanode.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeOptions.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\__init__.py">
@@ -41,6 +46,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\Utils\TestUtils\MetariggerTestCase.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\Utils\TestUtils\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\Utils\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\__init__.py">
@@ -56,6 +70,9 @@
     <Folder Include="MetaRigger\tests\" />
     <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\" />
     <Folder Include="MetaRigger\tests\MetaRigger\" />
+    <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\" />
+    <Folder Include="MetaRigger\Utils\" />
+    <Folder Include="MetaRigger\Utils\TestUtils\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -20,6 +20,12 @@ class Metanode(object):
 
             A Metanode class instance by default provides three connections : _parent(input), _childs(output) and _instance(input)
 
+        Options
+            Options are attributes that defines the On/Off statuses to be used for branching in the building process.
+            Every time an option is added with name {name} two corresponding methods are added.
+            The is{name} method which return the current status of the option.
+            The set{name} method which sets the option on or off.
+
     Attributes:
         _metaNode : Contains a reference to the actual metanode instance in the graph
         _type : Contains the class, derived from pymel.core.general.PyNode, that the node is supposed to wrap.
@@ -28,6 +34,7 @@ class Metanode(object):
     Methods:
         build() : Builds the actual node that is wrapped by the Metanode instance
         addConnection(name, isInput = True) : Adds a new connection to the metanode
+        addOption(name, default) : Adds a new option to the metanode
     """
 
     def __init__(self, type=pymel.core.nodetypes.Unknown):
@@ -155,3 +162,23 @@ class Metanode(object):
         def walkToAttr():
             return self._walkTo(connection)
         return walkToAttr
+
+    def addOption(self, name, default = True):
+        """
+        Add an option attribute to the Metanode instance.
+
+        An option is a boolean attribute that serves the purpose of providing an easy way to turn
+        features on or off.
+        Every time an option with name as {name} is added, two methods are added to the Metanode class instance:
+        is{name}, which returns the current status of the option and
+        set{name}, which sets the option either on or off.
+
+        Arguments:
+            name : The name of the option
+            default : The initial ( boolean ) value of the option.
+        """
+
+        self._metaNode.addAttr(name, attributeType = "bool", defaultValue = default);
+
+        setattr(self, "is{0}".format(name), lambda : getattr(self._metaNode, name).get() )
+        setattr(self, "set{0}".format(name), lambda value : getattr(self._metaNode, name).set(value) )
