@@ -27,7 +27,10 @@
     <Compile Include="MetaRigger\Metanodes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\Test_testMetanodeCounters.py">
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeCounters.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeInformations.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\__init__.py">
@@ -49,6 +52,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\Utils\DynamicClassesUtils\DynamicMethods.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\Utils\DynamicClassesUtils\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\Utils\TestUtils\MetariggerTestCase.py">
@@ -75,6 +84,7 @@
     <Folder Include="MetaRigger\tests\MetaRigger\" />
     <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\" />
     <Folder Include="MetaRigger\Utils\" />
+    <Folder Include="MetaRigger\Utils\DynamicClassesUtils\" />
     <Folder Include="MetaRigger\Utils\TestUtils\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

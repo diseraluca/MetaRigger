@@ -1,6 +1,8 @@
 import pymel.core
 import inspect
 
+import MetaRigger.Utils.DynamicClassesUtils.DynamicMethods as DynamicMethods
+
 class Metanode(object):
     """
     The Metanode class wraps a maya node in the dg graph.
@@ -26,6 +28,23 @@ class Metanode(object):
             The is{name} method which return the current status of the option.
             The set{name} method which sets the option on or off.
 
+        Counters
+            Counters are attributes that are used to store variable amounts of something.
+            Every couunter has a closed interval of values that it supports.
+            Every time a counter is added with name {name}, two corresponding methods are added:
+            An howMany{name}, which retrieves the value stored in the counter and
+            a setHowMany{name}, which stores a new value into the counter.
+
+            If a value outside the supported interval is setted on the counter, the value
+            is clamped to the nearest supported amount.
+
+        Informations
+            Informations are attribute that are used to store generic, string form, values.
+            They should be used every time an important piece of data does not fit in another datatype.
+            Every time an information is added with name {name}, two correlated methods are added to the Metanode Class Instance:
+            The which{name} method which is a getter for the new Information and
+            The setWhich{name} method which is a setter for the new Information.
+
     Attributes:
         _metaNode : Contains a reference to the actual metanode instance in the graph
         _type : Contains the class, derived from pymel.core.general.PyNode, that the node is supposed to wrap.
@@ -35,6 +54,7 @@ class Metanode(object):
         build() : Builds the actual node that is wrapped by the Metanode instance
         addConnection(name, isInput = True) : Adds a new connection to the metanode
         addOption(name, default) : Adds a new option to the metanode
+        addCounter(name, default, min, max)  : Adds a new counter to the metanode
     """
 
     def __init__(self, type=pymel.core.nodetypes.Unknown):
@@ -79,6 +99,8 @@ class Metanode(object):
             - _childs -> message ( Not Writable )
 
         Furthermore you can expect to have the following methods:
+            which_type()
+            setWhich_type()
             walkTo_instance()
             walkTo_parent()
             walkTo_childs()
@@ -89,7 +111,7 @@ class Metanode(object):
         The _instance attribute is used to store a connection to the actual instance  of the node wrapped by this metanode, if already built.
         """
 
-        self._metaNode.addAttr("_type", dataType = "string")
+        self.addInformation("_type")
         self.addConnection("_instance")
         self.addConnection("_parent")
         self.addConnection("_childs", False)
@@ -180,8 +202,8 @@ class Metanode(object):
 
         self._metaNode.addAttr(name, attributeType = "bool", defaultValue = default);
 
-        setattr(self, "is{0}".format(name), lambda : getattr(self._metaNode, name).get() )
-        setattr(self, "set{0}".format(name), lambda value : getattr(self._metaNode, name).set(value) )
+        DynamicMethods.addDynamicMethod(self, "is{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
+        DynamicMethods.addDynamicMethod(self, "set{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name) )
 
     def addCounter(self, name, default = 0.0, min = 0.0, max = 1.0):
         """
@@ -205,5 +227,23 @@ class Metanode(object):
 
         self._metaNode.addAttr(name, attributeType = "float", defaultValue = default, min = min, max = max)
 
-        setattr(self, "howMany{0}".format(name), lambda : getattr(self._metaNode, name).get() )
-        setattr(self, "setHowMany{0}".format(name), lambda value : getattr(self._metaNode, name).set(value, clamp = True) )
+        DynamicMethods.addDynamicMethod(self, "howMany{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
+        DynamicMethods.addDynamicMethod(self, "setHowMany{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name, clamp = True) )
+
+    def addInformation(self, name):
+        """
+        Adds an Information attribute to the Metanode Instance.
+
+        An information is a string attribute that is used to store general informations that don't fit in other attributes.
+        Every time an information is added with name as {name}, two methods are added to the Metanode class Instance:
+        which{name}, which will return the value stored in the information and
+        setWhich{name}, which sets the value of the information.
+
+        Arguments:
+            name : The name of the information
+        """
+
+        self._metaNode.addAttr(name, dataType = "string")
+
+        DynamicMethods.addDynamicMethod(self, "which{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
+        DynamicMethods.addDynamicMethod(self, "setWhich{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name) )
