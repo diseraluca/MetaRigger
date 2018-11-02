@@ -4,7 +4,7 @@ import pymel.core
 import MetaRigger.Metanodes.Metanode
 import MetaRigger.Utils.TestUtils.MetariggerTestCase
 
-class Test_Test_testMetanodeCounters(MetaRigger.Utils.TestUtils.MetariggerTestCase.MetariggerTestCase):
+class Test_testMetanodeCounters(MetaRigger.Utils.TestUtils.MetariggerTestCase.MetariggerTestCase):
     def setUp(self):
         self.metanode = MetaRigger.Metanodes.Metanode.Metanode()
 
@@ -23,7 +23,7 @@ class Test_Test_testMetanodeCounters(MetaRigger.Utils.TestUtils.MetariggerTestCa
 
         self.assertHasMethod(self.metanode, "howManyTests", "The new method wasn't added.")
 
-    def test_AnIsAttrMethodReturnsTheCurrentValueStoredInTheOptionAttribute(self):
+    def test_AnHowMnayAttrMethodReturnsTheCurrentValueStoredInTheOptionAttribute(self):
         self.metanode.addCounter("Tests")
 
         self.assertEquals(self.metanode.howManyTests(), self.metanode._metaNode.Tests.get(), "The howManyTests method did not return the correct value (0.0).")
