@@ -59,5 +59,19 @@ class Test_MetanodeConnections(MetaRigger.Utils.TestUtils.MetariggerTestCase.Met
 
         self.assertIsNone(self.metanode.walkToUnconnectedConnection(), "Walking on a isolated connection did not return None.")
 
+    def test_TheMetanodeAddConnectionMethodAddsAisAttrConnectedMethodToTheMetanodeClassInstance(self):
+        self.assertNotHasMethod(self.metanode, "isTestConnected", "The class instance already has the method we are trying to add.")
+
+        self.metanode.addConnection("Test")
+
+        self.assertHasMethod(self.metanode, "isTestConnected", "The new method wasn't added.")
+
+    def test_AnIsAttrConnectedMethodReturnsWhetherTheAttrHasAnyConnection(self):
+        self.metanode.addConnection("Test")
+
+        self.assertFalse(self.metanode.isTestConnected())
+        self.metanode._metaNode._childs >> self.metanode._metaNode.Test
+        self.assertTrue(self.metanode.isTestConnected())
+
 if __name__ == '__main__':
     unittest.main()

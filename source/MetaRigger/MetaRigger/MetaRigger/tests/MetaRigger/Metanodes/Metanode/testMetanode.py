@@ -56,10 +56,10 @@ class Test_testMetanode(MetaRigger.Utils.TestUtils.MetariggerTestCase.Metarigger
 
         self.assertIsInstance(builtNode, self.metanode._type, "The newly built node is not an instance of the class stored in _type.");
 
-    def test_TheMetanodeBuildMethodShouldStoreAReferenceToTheNewlyInstanciatedNodeInIts_InstanceMember(self):
-        builtNode = self.metanode.build()
+    def test_TheMetanodeBuildMethodShouldConnectThe_InstanceConnectionOfTheMayaNodeInstanceAndTheMessageAttributeOfTheNewlyCreatedNode(self):
+        newNode = self.metanode.build()
 
-        self.assertIs(self.metanode._instance, builtNode, "The _instance member is not holding a reference to the newly created node.")
+        self.assertIn(newNode ,self.metanode._metaNode._instance.listConnections(), "The newNode message attribute wasn't connected.")
 
     def test_TheMetanodeBuildMethodShouldNotCreateANewNodeIfTheNodeIsAlreadyBeenBuilt(self):
         self.metanode.build()

@@ -48,7 +48,6 @@ class Metanode(object):
     Attributes:
         _metaNode : Contains a reference to the actual metanode instance in the graph
         _type : Contains the class, derived from pymel.core.general.PyNode, that the node is supposed to wrap.
-        _instance : Contains a reference to the instanciated node the class wraps. The node is of the type stored in _type
 
     Methods:
         build() : Builds the actual node that is wrapped by the Metanode instance
@@ -79,11 +78,23 @@ class Metanode(object):
         if (not inspect.isclass(type) or not issubclass(type, pymel.core.general.PyNode)):
            raise TypeError
 
-        self._metaNode = pymel.core.nodetypes.Unknown()
+        self._metaNode = self._buildMetanode()
         self._type = type
-        self._instance = None
 
         self._preInitialization()
+
+    def _buildMetanode(self):
+        """
+        Builds the actual maya node representation of this metanode.
+
+        This method should be overriden by child classes that are represented with a
+        node that isn't if type Unknown.
+
+        Returns:
+            An instance of the type of node that is used to represent the Metanode in the maya graph.
+        """
+
+        return  pymel.core.nodetypes.Unknown()
 
     def _preInitialization(self):
         """
@@ -102,8 +113,11 @@ class Metanode(object):
             which_type()
             setWhich_type()
             walkTo_instance()
+            is_instanceConnected()
             walkTo_parent()
+            is_parentConnected()
             walkTo_childs()
+            is_childsConnected()
 
         These attributes can be used to reconstruct a Metanode class instance from an actual metanode.
         Furthermore, the _parent and _childs attribute connections are used to represent relationships in a metanode network.
@@ -126,10 +140,10 @@ class Metanode(object):
             A reference to the node wrapped by this metanode.
         """
 
-        if self._instance is None:
-           self._instance = self._type()
+        if not self.is_instanceConnected() :
+           self._type().message >> self._metaNode._instance
 
-        return self._instance
+        return self.walkTo_instance()
 
     def addConnection(self, name, isInput = True):
         """
@@ -140,6 +154,8 @@ class Metanode(object):
         Every time a connection is added with name {name}, a related walkTo{name} method is added 
         to the Metanode class instance.
         This method returns the node the connection points to.
+        A is{name}Connected method is added too and returns a boolean indication whether the node has any
+        connection.
 
         Arguments:
             name : The name of the connection
@@ -147,7 +163,8 @@ class Metanode(object):
         """
         self._metaNode.addAttr(name, attributeType = "message", writable = isInput, readable = not isInput)
 
-        setattr(self, "walkTo{0}".format(name), self._composeWalkToAttr(name))
+        DynamicMethods.addDynamicMethod(self, "walkTo{0}".format(name), self._composeWalkToAttr(name))
+        DynamicMethods.addDynamicMethod(self, "is{0}Connected".format(name), lambda : getattr(self._metaNode, name).isConnected())
 
     def _walkTo(self, connection):
         """
