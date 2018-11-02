@@ -1,6 +1,8 @@
 import pymel.core
 import inspect
 
+import MetaRigger.Utils.DynamicClassesUtils.DynamicMethods as DynamicMethods
+
 class Metanode(object):
     """
     The Metanode class wraps a maya node in the dg graph.
@@ -200,8 +202,8 @@ class Metanode(object):
 
         self._metaNode.addAttr(name, attributeType = "bool", defaultValue = default);
 
-        setattr(self, "is{0}".format(name), lambda : getattr(self._metaNode, name).get() )
-        setattr(self, "set{0}".format(name), lambda value : getattr(self._metaNode, name).set(value) )
+        DynamicMethods.addDynamicMethod(self, "is{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
+        DynamicMethods.addDynamicMethod(self, "set{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name) )
 
     def addCounter(self, name, default = 0.0, min = 0.0, max = 1.0):
         """
@@ -225,8 +227,8 @@ class Metanode(object):
 
         self._metaNode.addAttr(name, attributeType = "float", defaultValue = default, min = min, max = max)
 
-        setattr(self, "howMany{0}".format(name), lambda : getattr(self._metaNode, name).get() )
-        setattr(self, "setHowMany{0}".format(name), lambda value : getattr(self._metaNode, name).set(value, clamp = True) )
+        DynamicMethods.addDynamicMethod(self, "howMany{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
+        DynamicMethods.addDynamicMethod(self, "setHowMany{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name, clamp = True) )
 
     def addInformation(self, name):
         """
@@ -243,5 +245,5 @@ class Metanode(object):
 
         self._metaNode.addAttr(name, dataType = "string")
 
-        setattr(self, "which{0}".format(name), lambda : getattr(self._metaNode, name).get() )
-        setattr(self, "setWhich{0}".format(name), lambda value : getattr(self._metaNode, name).set(value) )
+        DynamicMethods.addDynamicMethod(self, "which{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
+        DynamicMethods.addDynamicMethod(self, "setWhich{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name) )
