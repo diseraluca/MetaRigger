@@ -24,6 +24,12 @@
     <Compile Include="MetaRigger\Metanodes\Metanode.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MetaRigger\Metanodes\Modules\Module.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\Metanodes\Modules\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MetaRigger\Metanodes\Widgets\Widget.py">
       <SubType>Code</SubType>
     </Compile>
@@ -49,6 +55,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\testMetanodeOptions.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Modules\testModule.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Modules\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MetaRigger\tests\MetaRigger\Metanodes\Widgets\testWidgets.py">
@@ -91,11 +103,13 @@
   <ItemGroup>
     <Folder Include="MetaRigger\" />
     <Folder Include="MetaRigger\Metanodes\" />
+    <Folder Include="MetaRigger\Metanodes\Modules\" />
     <Folder Include="MetaRigger\Metanodes\Widgets\" />
     <Folder Include="MetaRigger\tests\" />
     <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\" />
     <Folder Include="MetaRigger\tests\MetaRigger\" />
     <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\Metanode\" />
+    <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\Modules\" />
     <Folder Include="MetaRigger\tests\MetaRigger\Metanodes\Widgets\" />
     <Folder Include="MetaRigger\Utils\" />
     <Folder Include="MetaRigger\Utils\DynamicClassesUtils\" />

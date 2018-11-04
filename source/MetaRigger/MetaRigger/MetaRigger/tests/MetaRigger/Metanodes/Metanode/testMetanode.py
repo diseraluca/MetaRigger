@@ -68,5 +68,14 @@ class Test_testMetanode(MetaRigger.Utils.TestUtils.MetariggerTestCase.Metarigger
 
         self.assertEqual(len(pymel.core.ls()), count, "The second call to build has created a new node.")
 
+    def test_TheMetanodeGetPlugMethodReturnsTheNamedAttrInstanceFromTheMetanodeMayaInstance(self):
+        self.metanode._metaNode.addAttr("TestAttribute")
+
+        self.assertEqual(self.metanode.getPlug("TestAttribute"), self.metanode._metaNode.TestAttribute, "The method did not return the attribute plug.")
+       
+    def test_TheMetanodeGetPlugMethodReturnsNoneIfTheNamedAttrCantBeFound(self):
+        self.assertNotHasAttr(self.metanode._metaNode, "TestAttribute")
+        self.assertIsNone(self.metanode.getPlug("TestAttribute"), "The method did not return none for an unknown attribute.")
+
 if __name__ == '__main__':
     unittest.main()

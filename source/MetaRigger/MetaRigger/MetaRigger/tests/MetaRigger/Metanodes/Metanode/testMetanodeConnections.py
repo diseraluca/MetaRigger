@@ -73,5 +73,16 @@ class Test_MetanodeConnections(MetaRigger.Utils.TestUtils.MetariggerTestCase.Met
         self.metanode._metaNode._childs >> self.metanode._metaNode.Test
         self.assertTrue(self.metanode.isTestConnected())
 
+    def test_TheMetanodeAddConnectionMethodSavesTheNameOfTheNewlyConstructedAttributeInTheMetanodeClassInstance_connectionsMember(self):
+        self.metanode.addConnection("Test")
+
+        self.assertListEqual(self.metanode._connections, ["Test"], "The connection wasn't stored in _connections.")
+
+    def test_TheMetanodeListConnectionsMethodReturnsAListOfConnectionsNamesThatWereAdded(self):
+        self.metanode.addConnection("Test")
+        self.metanode.addConnection("Test2")
+
+        self.assertListEqual(self.metanode.listConnections(), ["Test", "Test2"], "listConnections didn't return the correct list of names.")
+
 if __name__ == '__main__':
     unittest.main()

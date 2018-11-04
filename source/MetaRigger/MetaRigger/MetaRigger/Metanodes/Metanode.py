@@ -48,12 +48,16 @@ class Metanode(object):
     Attributes:
         _metaNode : Contains a reference to the actual metanode instance in the graph
         _type : Contains the class, derived from pymel.core.general.PyNode, that the node is supposed to wrap.
+        _connections : A list of names of the added connections
 
     Methods:
         build() : Builds the actual node that is wrapped by the Metanode instance
         addConnection(name, isInput = True) : Adds a new connection to the metanode
+        walkTo(connection) : Returns the node at the end of the connection
         addOption(name, default) : Adds a new option to the metanode
         addCounter(name, default, min, max)  : Adds a new counter to the metanode
+        getPlug() : Retrieves a plug from the metanode maya instance
+        listConnections() : Retrieves a list of the added connections' names
     """
 
     def __init__(self, type=pymel.core.nodetypes.Unknown):
@@ -80,6 +84,7 @@ class Metanode(object):
 
         self._metaNode = self._buildMetanode()
         self._type = type
+        self._connections = []
 
         self._preInitialization()
 
@@ -88,7 +93,7 @@ class Metanode(object):
         Builds the actual maya node representation of this metanode.
 
         This method should be overriden by child classes that are represented with a
-        node that isn't if type Unknown.
+        node that isn't of type Unknown.
 
         Returns:
             An instance of the type of node that is used to represent the Metanode in the maya graph.
@@ -126,9 +131,9 @@ class Metanode(object):
         """
 
         self.addInformation("_type")
-        self.addConnection("_instance")
-        self.addConnection("_parent")
-        self.addConnection("_childs", False)
+        self._addUntrackedConnection("_instance")
+        self._addUntrackedConnection("_parent")
+        self._addUntrackedConnection("_childs", False)
 
     def build(self):
         """
@@ -161,12 +166,30 @@ class Metanode(object):
             name : The name of the connection
             isInput : Declares the connection as an input attribute if True and as an Output Attribute if False
         """
+
+        self._addUntrackedConnection(name, isInput)
+        self._connections.append(name)
+
+    def _addUntrackedConnection(self, name, isInput = True):
+        """
+        Adds a connection without storing its names in the metanode _connections member.
+
+        This is done to distinguish between user defined connections and default connections.
+        Every default connection is untracked and should not appear in any connection list on the metanode.
+        
+        This is for internal use only.
+
+        Arguments:
+            name : The name of the connection
+            isInput : Declares the connection as an input attribute if True and as an Output Attribute if False
+        """
+
         self._metaNode.addAttr(name, attributeType = "message", writable = isInput, readable = not isInput)
 
         DynamicMethods.addDynamicMethod(self, "walkTo{0}".format(name), self._composeWalkToAttr(name))
         DynamicMethods.addDynamicMethod(self, "is{0}Connected".format(name), lambda : getattr(self._metaNode, name).isConnected())
 
-    def _walkTo(self, connection):
+    def walkTo(self, connection):
         """
         Returns the node that is at the end of connection
 
@@ -199,7 +222,7 @@ class Metanode(object):
         """
 
         def walkToAttr():
-            return self._walkTo(connection)
+            return self.walkTo(connection)
         return walkToAttr
 
     def addOption(self, name, default = True):
@@ -264,3 +287,28 @@ class Metanode(object):
 
         DynamicMethods.addDynamicMethod(self, "which{0}".format(name), DynamicMethods.composeMayaAttrGetter(self._metaNode, name) )
         DynamicMethods.addDynamicMethod(self, "setWhich{0}".format(name), DynamicMethods.composeMayaAttrSetter(self._metaNode, name) )
+
+    def getPlug(self, attrName):
+        """
+        Retrieves a plug from the metanode maya instance.
+
+        Returns None if the plug can't be found.
+
+        Arguments:
+            attrName : The name of the plug to retrieve
+
+        Returns:
+            The searched for flag or None
+        """
+
+        return getattr(self._metaNode, attrName, None)
+
+    def listConnections(self):
+        """
+        Return a list of all the added connections.
+
+        Returns:
+            The list of added connections
+        """
+
+        return self._connections
